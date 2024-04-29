@@ -17,7 +17,7 @@
 .mypy_cache
 
 .venv
-pyproject.toml
+/poetry.toml
 
 
 # Byte-compiled / optimized / DLL files
