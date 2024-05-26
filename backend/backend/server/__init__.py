@@ -1,13 +1,11 @@
-import uvicorn
 from fastapi import FastAPI
+from .home_handler import home_router
+from .documents_handlers import documents_router
+from .users_handlers import users_router
 
-# Define a FastAPI app
 app = FastAPI()
 
-from .handlers import *
+app.include_router(home_router)
+app.include_router(documents_router)
+app.include_router(users_router)
 
-def main():
-    uvicorn.run("backend.server:app", host="0.0.0.0", port=8000, reload=True)
-
-if __name__ == "__main__":
-    main()
