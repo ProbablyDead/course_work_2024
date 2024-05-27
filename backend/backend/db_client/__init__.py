@@ -9,5 +9,6 @@ except ServerSelectionTimeoutError as err:
     print(err)
     exit(1)
 else:
-    db = client.data
+    documents_db = client.Documents
+    users_db = client.Users
 
