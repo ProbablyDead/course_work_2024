@@ -1,9 +1,14 @@
 from pydantic import BaseModel
+from typing import List
 from .__init__ import users_db
 
 class UserModel(BaseModel):
     username: str
     password: str
+    private_documents: List[str] = [] 
+
+    def check_private_document(self, id: str) -> bool:
+        return id in self.private_documents
 
 class UsersWorker():
     def __init__(self) -> None:
@@ -11,8 +16,7 @@ class UsersWorker():
 
     @staticmethod
     def document_to_model(document: dict) -> UserModel:
-        document['id'] = str(document['_id'])
-        del document['_id']
+        document["private_documents"] = [str(doc) for doc in document["private_documents"]]
         return UserModel(**document)
 
     def get_user_by_username(self, username: str) -> UserModel | None:
@@ -28,13 +32,19 @@ class UsersWorker():
         else:
             raise Exception("User already exists")
 
-    def login_user(self, user: UserModel) -> None:
-        document = self.users_collection.find_one({"username": user.username})
-        if document:
-            if self.document_to_model(document).password == user.password:
-                 return None
+    def login_user(self, user: UserModel) -> UserModel:
+        found_user = self.get_user_by_username(user.username)
+        if found_user:
+            if found_user.password == user.password:
+                return found_user
             else:
                 raise Exception("Wrong password")
         else:
             raise Exception("No user found")
+
+    def add_private_doc_to_user(self, user: UserModel, document_id: str):
+        if not document_id in user.private_documents:
+            user.private_documents.append(document_id)
+            self.users_collection.update_one({"username": user.username}, 
+                                             {"$set": {"private_documents": user.private_documents}})
 
