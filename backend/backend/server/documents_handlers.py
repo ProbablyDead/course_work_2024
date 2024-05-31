@@ -57,4 +57,9 @@ async def update_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
     db.update_private_document(DocumentModel(id=struct["id"], name=struct["name"], text=struct["text"]))
 
+@documents_router.post("/documents/delete/private")
+async def delete_private_document(struct: Dict[str, str]):
+    login_user(UserModel(username=struct["username"], password=struct["password"]))
+    db.delete_private_document(DocumentModel(id=struct["id"], name=struct["name"], text=struct["text"]))
+
 

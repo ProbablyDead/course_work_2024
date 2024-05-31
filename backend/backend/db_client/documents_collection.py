@@ -62,4 +62,9 @@ class DocumentsWorker():
         self.private_documents_collection.update_one({"_id": ObjectId(document.id)}, 
                                                      {"$set": {"text": document.text, "name": document.name}})
 
+    def delete_private_document(self, document: DocumentModel):
+        self.private_documents_collection.delete_one({"_id": ObjectId(document.id)}) 
+
+        
+
         
