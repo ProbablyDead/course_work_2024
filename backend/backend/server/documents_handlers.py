@@ -30,8 +30,8 @@ async def get_public_document(document_id: str):
 # Private
 @documents_router.post("/documents/private", response_model=List[DocumentModel])
 async def get_private_documents(user: UserModel):
-    login_user(user)
-    return db.get_private_documents_by_ids(user.private_documents)
+    found_user = login_user(user)
+    return db.get_private_documents_by_ids(found_user.private_documents)
 
 @documents_router.post("/documents/private/{document_id}", response_model=DocumentModel)
 async def get_private_document(document_id: str, user: UserModel):

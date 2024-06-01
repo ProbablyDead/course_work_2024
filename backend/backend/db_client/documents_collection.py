@@ -66,5 +66,3 @@ class DocumentsWorker():
         self.private_documents_collection.delete_one({"_id": ObjectId(document.id)}) 
 
         
-
-        

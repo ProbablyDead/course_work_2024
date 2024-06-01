@@ -1,3 +1,9 @@
-PORT = 8000
+import os
+from dotenv import load_dotenv
 
-MONGO_DB_PATH = "mongodb://user:pass@localhost:27017/"
+load_dotenv()
+
+MONGO_DB_PATH = os.getenv("MONGO_DB_PATH")
+CLIENT_PATH = os.getenv("CLIENT_PATH")
+
+PORT = 8000
