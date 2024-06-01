@@ -1,7 +1,7 @@
 from typing import Dict, List
 from fastapi import HTTPException, APIRouter
 
-from backend.db_client.users_collection import UserModel, UsersWorker
+from ..db_client.users_collection import UserModel, UsersWorker
 from ..db_client.documents_collection import DocumentModel, DocumentsWorker
 
 db = DocumentsWorker()

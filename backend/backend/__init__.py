@@ -1,4 +1,4 @@
-from backend.config import PORT
+from .config import PORT
 from .server import app
 
 def start():
