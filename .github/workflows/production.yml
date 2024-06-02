@@ -48,7 +48,8 @@ jobs:
 
       - name: Copy docker-compose file
         run: |
-          cat "${{ github.action_path }}/docker-compose.yaml"
+          PATH=${{ github.action_path }}
+          cat "${PATH}/docker-compose.yaml"
       # - name: Copy docker-compose file
       # docker-compose.yaml
       #   run: scp ${{ github.action_path }}/docker-compose.yaml 
