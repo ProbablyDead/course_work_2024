@@ -56,7 +56,7 @@ jobs:
           && DOCKER_TAG=${{secrets.DOCKER_TAG}}
              MONGO_USER=${{secrets.MONGO_USER}}
              MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}
-            docker compose up && exit"
+            docker compose up -d && exit"
 
       - name: cleanup
         run: rm -rf ~/.ssh
