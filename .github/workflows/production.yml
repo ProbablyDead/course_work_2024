@@ -47,8 +47,10 @@ jobs:
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
       - name: Copy docker-compose file
-        run: scp ${{ github.action_path }}/docker-compose.yaml 
-          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
+        run: ls ${{ github.action_path }}
+      # - name: Copy docker-compose file
+      #   run: scp ${{ github.action_path }}/docker-compose.yaml 
+      #     ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
       - name: Connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
