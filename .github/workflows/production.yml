@@ -48,7 +48,7 @@ jobs:
       - name: Connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
           "cd ${{ secrets.WORK_DIR }} 
-          && DOCKER_TAG=${secrets.DOCKER_TAG} docker compose pull 
+          && DOCKER_TAG=${{secrets.DOCKER_TAG}} docker compose pull 
           && docker compose up -d && exit"
 
       - name: cleanup
