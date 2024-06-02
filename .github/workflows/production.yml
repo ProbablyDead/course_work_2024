@@ -46,10 +46,13 @@ jobs:
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
+      - name: Copy docker-compose file
+        run: scp ${{ github.action_path }}/docker-compose.yaml 
+          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
+
       - name: Connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
          'cd ${{ secrets.WORK_DIR }}
-          && cat "${{ github.action_path }}/docker-compose.yaml" > docker-compose.yaml
           && DOCKER_TAG=${{secrets.DOCKER_TAG}} 
              MONGO_USER=${{secrets.MONGO_USER}}  
              MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}} 
