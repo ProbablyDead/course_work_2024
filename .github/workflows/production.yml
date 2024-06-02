@@ -49,7 +49,7 @@ jobs:
       - name: Connect and Pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
           && cd ${{ secrets.WORK_DIR }} 
-          && cat "${{ github.action_path }}/docker-compose.yaml" > docker-compose.yaml
+          # && cat "${{ github.action_path }}/docker-compose.yaml" > docker-compose.yaml
           && docker compose pull 
           && docker compose up -d  
           && exit                          
