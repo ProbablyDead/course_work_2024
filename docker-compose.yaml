@@ -1,0 +1,28 @@
+services:
+  server:
+    image: server
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python -m backend
+    ports:
+      - '8000:8000'
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    
+  mongodb:
+    image: mongodb/mongodb-community-server:latest
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=user
+      - MONGODB_INITDB_ROOT_PASSWORD=pass
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/
+
+volumes:
+  mongo-data:
+    

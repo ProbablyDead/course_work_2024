@@ -1,0 +1,11 @@
+ref/
+
+Dockerfile
+docker-compose.yaml
+
+backend/
+!backend/backend/
+!backend/poetry.lock
+!backend/pyproject.toml
+
+client/build/
