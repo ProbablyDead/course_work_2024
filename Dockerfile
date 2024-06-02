@@ -36,7 +36,7 @@ COPY --from=backend-builder /backend/backend /app
 COPY --from=client-builder /client/build /app/client/build
 
 ENV CLIENT_PATH="/app/client/build"
-ENV MONGO_DB_PATH="mongodb://user:pass@mongodb:27017/"
+ENV MONGO_DB_PATH="mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/"
 
 EXPOSE 8000
 

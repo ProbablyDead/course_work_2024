@@ -1,6 +1,6 @@
 services:
   server:
-    image: server
+    image: ${DOCKER_TAG}
     restart: always
     build:
       context: .
@@ -12,12 +12,12 @@ services:
       - mongodb
     depends_on:
       - mongodb
-    
+
   mongodb:
     image: mongodb/mongodb-community-server:latest
     environment:
-      - MONGODB_INITDB_ROOT_USERNAME=user
-      - MONGODB_INITDB_ROOT_PASSWORD=pass
+      - MONGODB_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGODB_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
     ports:
       - '27017:27017'
     volumes:
@@ -25,4 +25,4 @@ services:
 
 volumes:
   mongo-data:
-    
+   

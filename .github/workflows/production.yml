@@ -1,0 +1,54 @@
+name: production
+
+on:
+  push:
+    branches: [ "production", "testing" ]
+
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Login in to Docker Hub
+        uses: docker/login-action@v3.1.0
+        with: 
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v5.3.0
+        with: 
+          build-args: |
+            "MONGO_USER=${{ secrets.MONGO_USER }}"
+            "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}"
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_TAG }}
+
+
+  deploy-via-ssh:
+    needs: build-and-push-image
+    name: Deploy image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install ssh keys
+        run: |
+            install -m 600 -D /dev/null ~/.ssh/id_rsa
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
+      - name: Connect and pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
+          "cd ${{ secrets.WORK_DIR }} && docker compose pull 
+          && docker compose up -d && exit"
+
+      - name: cleanup
+        run: rm -rf ~/.ssh
