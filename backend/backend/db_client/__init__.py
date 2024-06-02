@@ -3,8 +3,6 @@ from pymongo import MongoClient
 
 from ..config import MONGO_DB_PATH
 
-print(f"!!!!!!!!!!!!!!!!!!!!!{MONGO_DB_PATH}")
-
 try:
     client = MongoClient(MONGO_DB_PATH, ServerSelectionTimeoutMS=1)
 except ServerSelectionTimeoutError as err:
