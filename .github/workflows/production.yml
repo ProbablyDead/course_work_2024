@@ -46,14 +46,9 @@ jobs:
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Copy docker-compose file
-        run: |
-          PATH=${{ github.action_path }}
-          cat "${PATH}/docker-compose.yaml"
-      # - name: Copy docker-compose file
-      # docker-compose.yaml
-      #   run: scp ${{ github.action_path }}/docker-compose.yaml 
-      #     ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
+      - name: Copy docker-compose.yaml to server
+        run: scp -o StrictHostKeyChecking=no docker-compose.yaml
+          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
       - name: Connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
