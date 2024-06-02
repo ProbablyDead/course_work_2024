@@ -51,7 +51,7 @@ jobs:
           ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}
 
       - name: Connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
           cd ${{ secrets.WORK_DIR }}
           DOCKER_TAG=${{secrets.DOCKER_TAG}} 
           MONGO_USER=${{secrets.MONGO_USER}}  
