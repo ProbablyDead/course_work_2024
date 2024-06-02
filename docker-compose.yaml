@@ -2,8 +2,6 @@ services:
   server:
     image: ${DOCKER_TAG}
     restart: always
-    environment:
-      - MONGO_DB_PATH=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017/
     build:
       context: .
       dockerfile: Dockerfile
