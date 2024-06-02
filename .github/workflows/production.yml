@@ -49,6 +49,7 @@ jobs:
       - name: Connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
          'cd ${{ secrets.WORK_DIR }}
+          && cat "${{ github.action_path }}/docker-compose.yaml" > docker-compose.yaml
           && DOCKER_TAG=${{secrets.DOCKER_TAG}} 
              MONGO_USER=${{secrets.MONGO_USER}}  
              MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}} 
