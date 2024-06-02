@@ -46,20 +46,18 @@ jobs:
             echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
-      - name: Add environment variables
-        run: DOCKER_TAG=${{secrets.DOCKER_TAG}}
-             MONGO_USER=${{secrets.MONGO_USER}}
-             MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}}
+      - name: Connect
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
+
+      - run: cd ${{ secrets.WORK_DIR }} 
 
       - name: Copy docker compose file
         run: cat "${{ github.action_path }}/docker-compose.yaml" > docker-compose.yaml
 
-      - name: Connect and pull
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
-          "cd ${{ secrets.WORK_DIR }} &&
-            docker compose pull &&
+      - name: Pull
+        run: docker compose pull &&
             docker compose up -d && 
-            exit"
+            exit
 
       - name: cleanup
         run: rm -rf ~/.ssh
