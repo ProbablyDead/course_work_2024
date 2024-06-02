@@ -49,8 +49,8 @@ jobs:
       - name: Connect and Pull
         run: | 
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
-          cd ${{ secrets.WORK_DIR }} 
-          docker compose pull 
-          docker compose up -d  
-          exit                          
+          "cd ${{ secrets.WORK_DIR }} &&
+          docker compose pull &&
+          docker compose up -d &&
+          exit"                        
 
