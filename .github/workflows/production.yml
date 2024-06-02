@@ -47,7 +47,7 @@ jobs:
             ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
       - name: Copy docker-compose file
-        run: cat "${{ github.action_path }}/docker-compose.yaml"
+        run: ls "${{ github.action_path }}"
       # - name: Copy docker-compose file
       # docker-compose.yaml
       #   run: scp ${{ github.action_path }}/docker-compose.yaml 
