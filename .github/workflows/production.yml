@@ -58,6 +58,7 @@ jobs:
           export MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}} 
           docker compose pull &&
           docker compose up -d &&
+          docker image prune -af &&
           exit"
 
       - name: cleanup
