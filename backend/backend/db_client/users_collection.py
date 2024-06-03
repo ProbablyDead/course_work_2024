@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List
 from .__init__ import users_db
+import bcrypt
 
 class UserModel(BaseModel):
     username: str
@@ -28,6 +29,7 @@ class UsersWorker():
 
     def add_user(self, user: UserModel):
         if not self.get_user_by_username(user.username):
+            user.password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             self.users_collection.insert_one(user.model_dump())
         else:
             raise Exception("User already exists")
@@ -35,7 +37,7 @@ class UsersWorker():
     def login_user(self, user: UserModel) -> UserModel:
         found_user = self.get_user_by_username(user.username)
         if found_user:
-            if found_user.password == user.password:
+            if bcrypt.checkpw(user.password.encode('utf-8'), found_user.password.encode('utf-8')):
                 return found_user
             else:
                 raise Exception("Wrong password")
