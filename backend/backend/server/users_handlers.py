@@ -4,14 +4,14 @@ from ..db_client.users_collection import UsersWorker, UserModel
 db = UsersWorker()
 
 users_router = APIRouter()
-@users_router.post("/user/signup")
+@users_router.post("/signup")
 async def add_user(user: UserModel):
     try:
         db.add_user(user)
     except Exception as err:
         raise HTTPException(status_code=409, detail=str(err))
 
-@users_router.post("/user/login")
+@users_router.post("/login")
 async def login_user(user: UserModel):
     try:
         db.login_user(user)
