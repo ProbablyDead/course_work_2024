@@ -5,13 +5,14 @@ services:
     environment:
       MONGO_USER: ${MONGO_USER}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
+      PORT: ${PORT}
     build:
       context: .
       dockerfile: Dockerfile
     command: python -m backend
     pull_policy: always
     ports:
-      - '80:80'
+      - '${PORT}:${PORT}'
     links:
       - mongodb
     depends_on:

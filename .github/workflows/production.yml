@@ -26,6 +26,7 @@ jobs:
           build-args: |
             "MONGO_USER=${{ secrets.MONGO_USER }}"
             "MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}"
+            "PORT=${{ vars.PORT }}"
           context: .
           push: true
           tags: ${{ secrets.DOCKER_TAG }}
