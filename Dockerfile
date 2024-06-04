@@ -37,7 +37,7 @@ COPY --from=client-builder /client/build /app/client/build
 
 ENV CLIENT_PATH="/app/client/build"
 
-EXPOSE 8000
+EXPOSE 80
 
 CMD ["python", "-m", "backend"] 
 

@@ -11,7 +11,7 @@ services:
     command: python -m backend
     pull_policy: always
     ports:
-      - '8000:8000'
+      - '80:80'
     links:
       - mongodb
     depends_on:
