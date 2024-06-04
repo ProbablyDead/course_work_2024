@@ -57,6 +57,7 @@ jobs:
           export DOCKER_TAG=${{secrets.DOCKER_TAG}} 
           export MONGO_USER=${{secrets.MONGO_USER}}  
           export MONGO_PASSWORD=${{secrets.MONGO_PASSWORD}} 
+          export PORT=${{vars.PORT}} 
           docker compose pull &&
           docker compose up -d &&
           docker image prune -af &&
