@@ -1,3 +1,4 @@
+import './LoginPage.css';
 import React from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
@@ -54,12 +55,12 @@ const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, errorCl
     return (
       <div>
         <h1>GOST constructor</h1>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div>
+        <div className='container' style={{ display: 'flex', justifyContent: 'space-around' }}>
+          <div className='form-group'>
             <h2>Login</h2>
             <LoginForm onLogin={handleLogin} />
           </div>
-          <div>
+          <div className='form-group'>
             <h2>Register</h2>
             <RegisterForm onRegister={handleRegister} />
           </div>

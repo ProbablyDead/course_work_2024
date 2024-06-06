@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './LoginPage.css';
 
 interface RegisterFormProps {
   onRegister: (username: string, password: string, confirmPassword: string) => void;
@@ -17,8 +18,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
+        <label className='form-label'>Username:</label>
         <input
+          className='form-input'
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -26,8 +28,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         />
       </div>
       <div>
-        <label>Password:</label>
+        <label className='form-label'>Password:</label>
         <input
+          className='form-input'
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -35,15 +38,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         />
       </div>
       <div>
-        <label>Confirm Password:</label>
+        <label className='form-label'>Confirm Password:</label>
         <input
+          className='form-input'
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Register</button>
+      <button className='btn' type="submit">Register</button>
     </form>
   );
 };

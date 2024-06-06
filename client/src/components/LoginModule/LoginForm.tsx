@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './LoginPage.css';
 
 interface LoginFormProps {
   onLogin: (username: string, password: string) => void;
@@ -16,8 +17,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Username:</label>
+        <label className='form-label'>Username:</label>
         <input
+          className='form-input' 
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -25,15 +27,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         />
       </div>
       <div>
-        <label>Password:</label>
+        <label className='form-label'>Password:</label>
         <input
+          className='form-input' 
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
       </div>
-      <button type="submit">Login</button>
+      <button className='btn' type="submit">Login</button>
     </form>
   );
 };
