@@ -28,6 +28,7 @@ services:
     volumes:
       - mongo-data:/data/
     command: [--auth]
+    restart: always
 
 volumes:
   mongo-data:
