@@ -27,7 +27,7 @@ services:
       - '27017:27017'
     volumes:
       - mongo-data:/data/
-    command: [--auth]
+    command: [mongod]
     restart: always
 
 volumes:
