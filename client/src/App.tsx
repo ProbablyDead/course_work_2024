@@ -32,6 +32,7 @@ function App() {
                         setHasError(true);
                         setErrorMessage(message);
                     }}
+                    errorClosed={() => {setHasError(false)}}
                     API={new UserAPI()}
                     />;
             break;

@@ -6,6 +6,7 @@ import UserAPIProps from '../../ts/interfaces/API/User_API.interface';
 interface LoginPageProps {
     userLogined: () => void;
     errorOccured: (message: string) => void;
+    errorClosed: () => void;
     API: UserAPIProps;
 };
 
@@ -26,11 +27,17 @@ function checkUsernameAndPassword(username: string, password: string,
     return true;
 };
 
-const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, API}) => {
+const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, errorClosed, API}) => {
+    const successLogin = (data: any) => {
+        console.log(`${JSON.stringify(data)}`);
+        errorClosed();
+        userLogined();
+    };
+
     const handleLogin = (username: string, password: string) => {
         if (!checkUsernameAndPassword(username, password, errorOccured)) return;
 
-        API.loginUser(username, password, (u) => {console.log(`${u}`); userLogined();}, errorOccured);
+        API.loginUser(username, password, successLogin, errorOccured);
     };
 
     const handleRegister = (username: string, password: string, confirmPassword: string) => {
@@ -41,9 +48,7 @@ const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, API}) =
             return;
         }
 
-        // API.registerUser(username, password);
-
-        userLogined();
+        API.registerUser(username, password, successLogin, errorOccured);
     };
 
     return (
