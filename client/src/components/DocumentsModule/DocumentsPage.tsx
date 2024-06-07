@@ -23,11 +23,11 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
     useEffect(() => {
         publicDocumentsAPI.getDocumentsList(setPublicDocs, errorOccured);
         privateDocumentsAPI.getDocumentsList(setPrivateDocs, errorOccured);
-    }, [publicDocumentsAPI, privateDocumentsAPI, setPublicDocs, setPrivateDocs, errorOccured]);
+    }, [publicDocumentsAPI, privateDocumentsAPI, errorOccured]);
 
     const handleBackClick = useCallback(() => {
         setSelectedDocument(null);
-    }, [setSelectedDocument]);
+    }, []);
 
     return (
     <div className="documents-page">
@@ -35,10 +35,10 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
                 <Document document={selectedDocument} onBack={handleBackClick} />
             ) : (
                 <>
-                    <DocumentsList docs={publicDocs} handleOpenDocument={(id: string) => 
+                    <DocumentsList name="Public" docs={publicDocs} handleOpenDocument={(id: string) => 
                         {publicDocumentsAPI.getDocumentByID(id, setSelectedDocument, errorOccured)}} />
                     <div className="documents-separator"></div>
-                    <DocumentsList docs={privateDocs} handleOpenDocument={(id: string) => 
+                    <DocumentsList name={`Private - ${privateDocumentsAPI.getUsername()}`} docs={privateDocs} handleOpenDocument={(id: string) => 
                         {privateDocumentsAPI.getDocumentByID(id, setSelectedDocument, errorOccured)}} />
                 </>
             )}

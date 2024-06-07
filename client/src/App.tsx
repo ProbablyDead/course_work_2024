@@ -28,9 +28,7 @@ function App() {
         setHasError(true);
         setErrorMessage(message);
     };
-    const errorClosed = () => {
-        setHasError(false);
-    };
+    const errorClosed = () => { setHasError(false); };
 
     let currentPage;
 
