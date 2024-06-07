@@ -1,18 +1,25 @@
-import User from "../../ts/classes/User.class";
-import DocumentsAPIProps from "../../ts/interfaces/API/Documents_API.interface";
+import DocumentPreview from "./DocumentPreview";
+import LatexDocument from "../../ts/classes/LatexDocument.class";
+import "./styles/DocumentList.css";
 
 interface DocumentsListProps {
-    API: DocumentsAPIProps;
-}
-
-const DocumentsList: React.FC<DocumentsListProps> = ({API}) => {
-    if (!User.isLogined()) {
-    }
-
-    return (
-            <div>DOCS</div>
-           );
+    docs: LatexDocument[];
+    handleOpenDocument: (id: string) => void;
 };
 
+const DocumentsList: React.FC<DocumentsListProps> = ({docs, handleOpenDocument}) => {
+    return (
+        <div className="documents-list-container">
+            <ul className="documents-list">
+            {
+                docs.map(doc => (
+                    <DocumentPreview key={doc.id} document={doc} onClick={handleOpenDocument}/>
+                ))
+            }
+            </ul>
+        </div>
+    );
+
+};
 export default DocumentsList;
 

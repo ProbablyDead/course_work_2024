@@ -1,11 +1,18 @@
 export default class LatexDocument {
-    id: string;
-    name: string;
-    text?: string;
+    private _id: string;
+    public get id(): string { return this._id; }
+
+    private _name: string;
+    public get name(): string { return this._name; }
+    public set name(value: string) { this._name = value; }
+
+    private _text?: string | undefined;
+    public get text(): string | undefined { return this._text; }
+    public set text(value: string | undefined) { this._text = value; }
 
     constructor(id: string, name: string, text?:string) {
-        this.id = id;
-        this.name = name;
-        this.text = text;
+        this._id = id;
+        this._name = name;
+        this._text = text;
     }
 }

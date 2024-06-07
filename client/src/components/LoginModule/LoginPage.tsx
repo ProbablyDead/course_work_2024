@@ -1,5 +1,5 @@
 import './LoginPage.css';
-import React from 'react';
+import React, { useCallback } from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import UserAPIProps from '../../ts/interfaces/API/User_API.interface';
@@ -29,19 +29,18 @@ function checkUsernameAndPassword(username: string, password: string,
 };
 
 const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, errorClosed, API}) => {
-    const successLogin = (data: any) => {
-        console.log(`${JSON.stringify(data)}`);
+    const successLogin = useCallback(() => {
         errorClosed();
         userLogined();
-    };
+    }, [errorClosed, userLogined]);
 
-    const handleLogin = (username: string, password: string) => {
+    const handleLogin = useCallback((username: string, password: string) => {
         if (!checkUsernameAndPassword(username, password, errorOccured)) return;
 
         API.loginUser(username, password, successLogin, errorOccured);
-    };
+    }, [successLogin, errorOccured, API]);
 
-    const handleRegister = (username: string, password: string, confirmPassword: string) => {
+    const handleRegister = useCallback((username: string, password: string, confirmPassword: string) => {
         if (!checkUsernameAndPassword(username, password, errorOccured)) return;
 
         if (password !== confirmPassword) {
@@ -50,7 +49,7 @@ const LoginPage: React.FC<LoginPageProps> = ({userLogined, errorOccured, errorCl
         }
 
         API.registerUser(username, password, successLogin, errorOccured);
-    };
+    }, [successLogin, errorOccured, API]);
 
     return (
       <div>

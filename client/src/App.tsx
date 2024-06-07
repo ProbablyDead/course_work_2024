@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import './App.css';
 import LoginPage from './components/LoginModule/LoginPage';
-import DocumentsList from './components/DocumentsModule/DocumentsList';
-import Document from './components/DocumentsModule/Document';
-import { LoginPageState, DocumentsListState, DocumentState } from './ts/interfaces/States.interface';
+import DocumentsPage from './components/DocumentsModule/DocumentsPage';
+import { LoginPageState, DocumentsListState } from './ts/interfaces/States.interface';
 import UserAPI from './ts/classes/API/UserAPI.class';
-import DocumentsAPI from './ts/classes/API/DodumentsAPI.class';
+import PrivateDocumentsAPI from './ts/classes/API/PrivateDocumentsAPI.class';
+import PublicDocumentsAPI from './ts/classes/API/PublicDocumentsAPI.class';
 import ErrorMessage from './components/ErrorModule/ErrorMessage';
+import User from './ts/classes/User.class';
+import './App.css';
 
 type PageName = (
-    LoginPageState | DocumentsListState | DocumentState
+    LoginPageState | DocumentsListState 
 )["page"];
 
 interface AppState {
@@ -21,6 +22,15 @@ function App() {
 
     const [hasError, setHasError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [user, setUser] = useState<User | null>(null);
+
+    const errorOccured = (message: string) => {
+        setHasError(true);
+        setErrorMessage(message);
+    };
+    const errorClosed = () => {
+        setHasError(false);
+    };
 
     let currentPage;
 
@@ -28,19 +38,17 @@ function App() {
         case "loginPage":
             currentPage = <LoginPage 
                     userLogined={() => setAppState({page: "documentsList"})} 
-                    errorOccured={(message: string) => {
-                        setHasError(true);
-                        setErrorMessage(message);
-                    }}
-                    errorClosed={() => {setHasError(false)}}
-                    API={new UserAPI()}
+                    errorOccured={errorOccured}
+                    errorClosed={errorClosed}
+                    API={new UserAPI(setUser)}
                     />;
             break;
         case "documentsList":
-            currentPage = <DocumentsList API={new DocumentsAPI()}/>;
-            break;
-        case "document":
-            currentPage = <Document/>;
+            currentPage = <DocumentsPage 
+                publicDocumentsAPI={new PublicDocumentsAPI()}
+                privateDocumentsAPI={new PrivateDocumentsAPI(user as User)}
+                errorOccured={errorOccured}
+                />;
             break;
     }
 

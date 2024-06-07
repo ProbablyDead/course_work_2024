@@ -1,0 +1,15 @@
+.documents-page {
+    display: flex;
+    height: 100vh;
+}
+
+.documents-list {
+    flex: 1;
+    overflow-y: scroll;
+}
+
+.documents-separator {
+    width: 1px;
+    background-color: #ccc;
+}
+
