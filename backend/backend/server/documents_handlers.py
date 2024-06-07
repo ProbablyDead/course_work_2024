@@ -55,7 +55,6 @@ async def add_private_document(struct: Dict[str, str]):
     if document:
         return document
 
-
 @documents_router.post("/update/private", response_model=DocumentModel)
 async def update_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
