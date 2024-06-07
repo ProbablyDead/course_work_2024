@@ -47,8 +47,7 @@ class DocumentsWorker():
 
     # Private section
     def get_private_document_by_id(self, id: str) -> DocumentModel | None:
-        doc = self.get_private_documents_by_ids([id])
-        return doc[0] if len(doc) > 0 else None
+        return self.get_document_by_id(id, self.private_documents_collection)
 
     def get_private_documents_by_ids(self, ids: List[str]) -> List[DocumentModel]:
         return self.get_documents(self.private_documents_collection, 
@@ -65,4 +64,3 @@ class DocumentsWorker():
     def delete_private_document(self, document: DocumentModel):
         self.private_documents_collection.delete_one({"_id": ObjectId(document.id)}) 
 
-        
