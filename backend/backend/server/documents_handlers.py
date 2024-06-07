@@ -46,20 +46,30 @@ async def get_private_document(document_id: str, user: UserModel):
     else:
         raise HTTPException(status_code=404, detail="Document not found")
 
-@documents_router.post("/add/private")
+@documents_router.post("/add/private", response_model=DocumentModel)
 async def add_private_document(struct: Dict[str, str]):
     user = login_user(UserModel(username=struct["username"], password=struct["password"]))
     id = db.add_private_document(DocumentModel(name=struct["name"], text=struct["text"]))
     user_db.add_private_doc_to_user(user, id)
+    document = db.get_private_document_by_id(id)
+    if document:
+        return document
 
-@documents_router.post("/update/private")
+
+@documents_router.post("/update/private", response_model=DocumentModel)
 async def update_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
     db.update_private_document(DocumentModel(id=struct["id"], name=struct["name"], text=struct["text"]))
+    document = db.get_private_document_by_id(struct["id"])
+    if document:
+        return document
 
-@documents_router.post("/delete/private")
+@documents_router.post("/delete/private", response_model=DocumentModel)
 async def delete_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
     db.delete_private_document(DocumentModel(id=struct["id"], name=struct["name"], text=struct["text"]))
+    document = db.get_private_document_by_id(struct["id"])
+    if document:
+        return document
 
 
