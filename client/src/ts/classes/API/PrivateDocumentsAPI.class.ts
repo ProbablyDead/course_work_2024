@@ -30,8 +30,9 @@ export default class PrivateDocumentsAPI extends API implements PrivateDocuments
                              (documents: unknown) => { success(this.addPrivateFieldToDocument(this.parseDocument(documents))); } , error);
     }
 
-    public addPrivateDocument(name: string, text: string, success: () => void, error: (message: string) => void): void {
-        this.sendPOSTRequest(`${this.prefix}/add/private`, {...this.user.getStruct(), ...{"name": name, "text": text}}, success, error);
+    public addPrivateDocument(name: string, text: string, success: (document: LatexDocument) => void, error: (message: string) => void): void {
+        this.sendPOSTRequest(`${this.prefix}/add/private`, {...this.user.getStruct(), ...{"name": name, "text": text}}, 
+                             (document: unknown) => {success(this.addPrivateFieldToDocument(this.parseDocument(document)))}, error);
     }
 
     public updatePrivateDocument(doc: LatexDocument, success: () => void, error: (message: string) => void): void {

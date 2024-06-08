@@ -26,17 +26,34 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
     }, [publicDocumentsAPI, privateDocumentsAPI, errorOccured]);
 
     const handleBackClick = useCallback(() => {
+        privateDocumentsAPI.getDocumentsList(setPrivateDocs, errorOccured);
+        publicDocumentsAPI.getDocumentsList(setPublicDocs, errorOccured);
         setSelectedDocument(null);
-    }, []);
+    }, [publicDocumentsAPI, privateDocumentsAPI, errorOccured]);
 
     const handleChange = useCallback((document: LatexDocument) => {
         privateDocumentsAPI.updatePrivateDocument(document, () => {}, errorOccured);
     }, [privateDocumentsAPI, errorOccured]);
-
+ 
+    const handleCreateNew = useCallback((document: LatexDocument) => {
+        privateDocumentsAPI.addPrivateDocument(document.name + " (copy)", document.text ? document.text : "", 
+        (document: LatexDocument) => {setSelectedDocument(document)}, errorOccured);
+    }, [privateDocumentsAPI, errorOccured]);
+ 
+    const handleDelete = useCallback((document: LatexDocument) => {
+        privateDocumentsAPI.deletePrivateDocument(document.id, 
+        handleBackClick, errorOccured);
+    }, [privateDocumentsAPI, handleBackClick, errorOccured]);
+ 
     return (
     <div className="documents-page">
             {selectedDocument ? (
-                <Document doc={selectedDocument} onBack={handleBackClick} onChange={handleChange} errorOccured={errorOccured}/>
+                <Document doc={selectedDocument}
+                    onBack={handleBackClick} 
+                    onChange={handleChange}
+                    onCreateNew={handleCreateNew}
+                    onDelete={handleDelete}
+                    errorOccured={errorOccured}/>
             ) : (
                 <>
                     <DocumentsList name="Public" docs={publicDocs} handleOpenDocument={(id: string) => 

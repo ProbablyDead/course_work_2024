@@ -6,10 +6,12 @@ interface DocumentProps {
     doc: LatexDocument;
     onBack: () => void;
     onChange: (document: LatexDocument) => void;
+    onCreateNew: (document: LatexDocument) => void;
+    onDelete: (document: LatexDocument) => void;
     errorOccured: (message: string) => void;
 }
 
-const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, errorOccured}) => {
+const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew, onDelete, errorOccured}) => {
     const handleSave = useCallback(() => {
         const name = document.getElementById("name")?.innerText;
         const text = document.getElementById("text")?.innerText;
@@ -27,16 +29,32 @@ const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, errorOccured
 
     return (
         <div className="document-details">
-            <button className="button" onClick={onBack}>Back</button>
-            {doc.isPrivate && <button className="button" onClick={handleSave}>Save</button>}
-            <h1 
-                id="name"
-                className="document-name"
-                suppressContentEditableWarning
-                contentEditable={doc.isPrivate}>
-                {doc.name}
-            </h1> 
-            <p id="text" contentEditable={doc.isPrivate} className="document-text">{doc.text || 'No text available'}</p>
+            <h1>{doc.isPrivate ? "Private" : "Public"}</h1>
+            <div>
+                <button className="button" onClick={onBack}>Back</button>
+                {
+                    doc.isPrivate ? (
+                    <>
+                        <button className="button" onClick={handleSave}>Save</button>
+                        <button className="button" onClick={() => onDelete(doc)}>Delete</button>
+                    </>
+                    ) : (
+                        <button className="button" onClick={() => onCreateNew(doc)}>Create private</button>
+                    )
+                }
+                <h3 
+                    id="name"
+                    className="document-name"
+                    suppressContentEditableWarning
+                    contentEditable={doc.isPrivate}>
+                    {doc.name}
+                </h3> 
+                <p id="text" 
+                    suppressContentEditableWarning
+                    contentEditable={doc.isPrivate} 
+                    className="document-text">{doc.text || 'No text available'}
+                </p>
+            </div>
         </div>
     );
 };
