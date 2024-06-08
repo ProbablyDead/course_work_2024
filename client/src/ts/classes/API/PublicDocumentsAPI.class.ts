@@ -9,14 +9,10 @@ export default class PublicDocumentsAPI extends API implements PublicDocumentsAP
     }
 
     public getDocumentsList(success: (docs: LatexDocument[]) => void, error: (message: string) => void): void {
-        this.sendGETRequest(`${this.prefix}/public`, ((docs: any) => {
-            success(this.parseDocuments(docs));
-        }), error);
+        this.sendGETRequest(`${this.prefix}/public`, (data: unknown) => { success(this.parseDocumentsArray(data)); }, error);
     }
 
     public getDocumentByID(id: string, success: (doc: LatexDocument) => void, error: (message: string) => void): void {
-        this.sendGETRequest(`${this.prefix}/public/${id}`, ((doc: any) => {
-            success(this.parseDocument(doc));
-        }), error);
+        this.sendGETRequest(`${this.prefix}/public/${id}`, (data: unknown) => { success(this.parseDocument(data)); }, error);
     }
 }

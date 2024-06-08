@@ -7,7 +7,7 @@ export default class User {
         this.password = password;
     }
 
-    public getUserStruct() {
+    public getStruct() {
         return {"username": this.username, "password": this.password};
     }
 }
