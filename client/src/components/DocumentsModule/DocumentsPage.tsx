@@ -29,10 +29,14 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
         setSelectedDocument(null);
     }, []);
 
+    const handleChange = useCallback((document: LatexDocument) => {
+        privateDocumentsAPI.updatePrivateDocument(document, () => {}, errorOccured);
+    }, [privateDocumentsAPI, errorOccured]);
+
     return (
     <div className="documents-page">
             {selectedDocument ? (
-                <Document document={selectedDocument} onBack={handleBackClick} />
+                <Document doc={selectedDocument} onBack={handleBackClick} onChange={handleChange} errorOccured={errorOccured}/>
             ) : (
                 <>
                     <DocumentsList name="Public" docs={publicDocs} handleOpenDocument={(id: string) => 
