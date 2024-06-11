@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import LatexDocument from '../../ts/classes/LatexDocument.class';
+import DocumentText from './DocumentText';
 import './styles/Document.css';
 
 interface DocumentProps {
@@ -12,9 +13,10 @@ interface DocumentProps {
 }
 
 const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew, onDelete, errorOccured}) => {
+    const ref = useRef<HTMLDivElement>(null);
+
     const handleSave = useCallback(() => {
         const name = document.getElementById("name")?.innerText;
-        const text = document.getElementById("text")?.innerText;
         
         if (!name || name.length === 0) {
             errorOccured("Enter document name");
@@ -22,14 +24,13 @@ const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew,
         }
 
         doc.name = name;
-        doc.text = text;
+        doc.text = ref.current?.innerHTML;
 
         onChange(doc);
     }, [doc, errorOccured, onChange]);
 
     return (
         <div className="document-details">
-            <h1>{doc.isPrivate ? "Private" : "Public"}</h1>
             <div>
                 <button className="button" onClick={onBack}>Back</button>
                 {
@@ -42,18 +43,19 @@ const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew,
                         <button className="button" onClick={() => onCreateNew(doc)}>Create private</button>
                     )
                 }
-                <h3 
+                <h1>{`${doc.isPrivate ? "Private" : "Public"}: `}</h1>
+                <h1 
                     id="name"
                     className="document-name"
                     suppressContentEditableWarning
                     contentEditable={doc.isPrivate}>
-                    {doc.name}
-                </h3> 
-                <p id="text" 
-                    suppressContentEditableWarning
-                    contentEditable={doc.isPrivate} 
-                    className="document-text">{doc.text || 'No text available'}
-                </p>
+                    <b>{doc.name}</b>
+                </h1>
+                <DocumentText
+                    text={doc.text || ""}
+                    ref={ref}
+                    isEditable={doc.isPrivate}
+                />
             </div>
         </div>
     );
