@@ -89,7 +89,9 @@ async def generate_pdf(struct: Dict[str, str]):
         pdfkit.from_string(text, pdf_path, options={'encoding': 'UTF-8'})
 
         response = FileResponse(pdf_path, media_type='application/pdf', 
-                                headers={'Content-Disposition': f'attachment; filename={filename}'}, filename=filename)
+                                headers={"Content-type": "charset=utf-8", 
+                                         'Content-Disposition': f'attachment; filename={filename}'},
+                                filename=filename)
 
         asyncio.create_task(delete_temporary_file(pdf_path))
 
