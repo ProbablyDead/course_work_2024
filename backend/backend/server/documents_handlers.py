@@ -85,8 +85,8 @@ async def generate_pdf(struct: Dict[str, str]):
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         pdf_path = tmpfile.name
-
-        pdfkit.from_string(text, pdf_path)
+        
+        pdfkit.from_string(text, pdf_path, options={'encoding': 'UTF-8'})
 
         response = FileResponse(pdf_path, media_type='application/pdf', filename=f'{name}.pdf')
 
