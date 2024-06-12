@@ -51,7 +51,7 @@ export default class API {
                         'Accept': 'application/pdf',
                         'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"name": "a", "text": text})
+            body: JSON.stringify({"text": text})
         }).then(success);
     }
 }

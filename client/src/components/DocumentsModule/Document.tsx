@@ -35,7 +35,7 @@ const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew,
             return;
         }
 
-        onDownload(document.getElementById("name")?.innerText || "file", ref.current.innerText);
+        onDownload(document.getElementById("name")?.innerText || "file", ref.current.innerHTML);
     }, [onDownload]);
 
     return (
