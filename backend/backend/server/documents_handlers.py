@@ -80,7 +80,7 @@ async def delete_temporary_file(pdf_path: str):
 
 @documents_router.post("/generate_pdf", response_class=FileResponse)
 async def generate_pdf(struct: Dict[str, str]):
-    filename = f'{struct["name"]}.pdf'
+    filename = "tmp.pdf"
     text = struct["text"]
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
