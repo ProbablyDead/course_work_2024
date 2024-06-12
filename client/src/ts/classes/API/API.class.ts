@@ -45,11 +45,10 @@ export default class API {
     }
 
     protected getPDF(text: string, success: (file: unknown) => void) {
-        fetch(API.ADDRESS + "documents/generate_pdf", {
+        fetch(API.ADDRESS + "documents/generate_docx", {
             method: 'POST',
             headers: {
-                        'Accept': 'application/pdf',
-                        'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({"text": text})
         }).then(success);
