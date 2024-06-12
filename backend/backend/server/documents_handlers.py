@@ -1,7 +1,6 @@
 from typing import Dict, List
 from fastapi import HTTPException, APIRouter
 from fastapi.responses import FileResponse
-from htmldocx.h2d import Document
 
 from ..db_client.users_collection import UserModel, UsersWorker
 from ..db_client.documents_collection import DocumentModel, DocumentsWorker
@@ -70,10 +69,10 @@ async def delete_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
     db.delete_private_document(DocumentModel(id=struct["id"]))
 
+import pdfkit
 import tempfile
 import os
 import asyncio
-from htmldocx import HtmlToDocx
 
 async def delete_temporary_file(pdf_path: str):
     await asyncio.sleep(5)  
@@ -84,18 +83,17 @@ async def generate_pdf(struct: Dict[str, str]):
     filename = "tmp.pdf"
     text = struct["text"]
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmpfile:
-        docx_path = tmpfile.name
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
+        pdf_path = tmpfile.name
         
-        doc = Document()
-        HtmlToDocx().add_html_to_document(text, doc)
-        doc.save(docx_path)
+        pdfkit.from_string(text, pdf_path, options={'encoding': 'UTF-8'})
 
-        response = FileResponse(docx_path, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
-                                headers={'Content-Disposition': f'attachment; filename={filename}'},
+        response = FileResponse(pdf_path, media_type='application/pdf', 
+                                headers={"Content-type": "application/pdf", 
+                                         'Content-Disposition': f'attachment; filename={filename}'},
                                 filename=filename)
 
-        asyncio.create_task(delete_temporary_file(docx_path))
+        asyncio.create_task(delete_temporary_file(pdf_path))
 
         return response
 
