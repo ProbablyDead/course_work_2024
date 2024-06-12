@@ -39,5 +39,7 @@ ENV CLIENT_PATH="/app/client/build"
 
 EXPOSE ${PORT}
 
+RUN apt-get update && apt-get install -y wkhtmltopdf
+
 CMD ["python", "-m", "backend"] 
 
