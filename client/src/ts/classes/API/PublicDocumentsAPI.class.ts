@@ -15,4 +15,8 @@ export default class PublicDocumentsAPI extends API implements PublicDocumentsAP
     public getDocumentByID(id: string, success: (doc: LatexDocument) => void, error: (message: string) => void): void {
         this.sendGETRequest(`${this.prefix}/public/${id}`, (data: unknown) => { success(this.parseDocument(data)); }, error);
     }
+
+    public getPDFDocument(text: string, success: (response: unknown) => void): void{
+        this.getPDF(text, success);
+    }
 }
