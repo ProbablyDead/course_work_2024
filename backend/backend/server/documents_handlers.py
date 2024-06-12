@@ -89,7 +89,7 @@ async def generate_pdf(struct: Dict[str, str]):
         pdfkit.from_string(text, pdf_path, options={'encoding': 'UTF-8'})
 
         response = FileResponse(pdf_path, media_type='application/pdf', 
-                                headers={"Content-type": "charset=utf-8", 
+                                headers={"Content-type": "application/pdf", 
                                          'Content-Disposition': f'attachment; filename={filename}'},
                                 filename=filename)
 
