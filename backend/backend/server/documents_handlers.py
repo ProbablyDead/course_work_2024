@@ -2,10 +2,6 @@ from typing import Dict, List
 from fastapi import HTTPException, APIRouter
 from fastapi.responses import FileResponse
 
-import pdfkit
-import tempfile
-import os
-
 from ..db_client.users_collection import UserModel, UsersWorker
 from ..db_client.documents_collection import DocumentModel, DocumentsWorker
 
@@ -73,14 +69,29 @@ async def delete_private_document(struct: Dict[str, str]):
     login_user(UserModel(username=struct["username"], password=struct["password"]))
     db.delete_private_document(DocumentModel(id=struct["id"]))
 
+import pdfkit
+import tempfile
+import os
+import asyncio
+
+async def delete_temporary_file(pdf_path: str):
+    await asyncio.sleep(5)  
+    os.remove(pdf_path)
+
 @documents_router.post("/generate_pdf", response_class=FileResponse)
 async def generate_pdf(struct: Dict[str, str]):
     name = struct["name"]
     text = struct["text"]
 
-    with tempfile.NamedTemporaryFile(suffix=".pdf") as tmpfile:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
         pdf_path = tmpfile.name
 
         pdfkit.from_string(text, pdf_path)
 
-        return FileResponse(pdf_path, media_type='application/pdf', filename=f'{name}.pdf')
+        response = FileResponse(pdf_path, media_type='application/pdf', filename=f'{name}.pdf')
+
+        print(pdf_path)
+        asyncio.create_task(delete_temporary_file(pdf_path))
+
+        return response
+
