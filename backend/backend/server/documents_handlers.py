@@ -80,7 +80,7 @@ async def delete_temporary_file(pdf_path: str):
 
 @documents_router.post("/generate_pdf", response_class=FileResponse)
 async def generate_pdf(struct: Dict[str, str]):
-    name = struct["name"]
+    filename = f'{struct["name"]}.pdf'
     text = struct["text"]
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmpfile:
@@ -88,9 +88,9 @@ async def generate_pdf(struct: Dict[str, str]):
         
         pdfkit.from_string(text, pdf_path, options={'encoding': 'UTF-8'})
 
-        response = FileResponse(pdf_path, media_type='application/pdf', headers={"charset": "utf-8"}, filename=f'{name}.pdf')
+        response = FileResponse(pdf_path, media_type='application/pdf', 
+                                headers={'Content-Disposition': f'attachment; filename={filename}'}, filename=filename)
 
-        print(pdf_path)
         asyncio.create_task(delete_temporary_file(pdf_path))
 
         return response
