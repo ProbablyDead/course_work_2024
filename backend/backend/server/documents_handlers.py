@@ -78,7 +78,7 @@ async def delete_temporary_file(pdf_path: str):
     await asyncio.sleep(5)  
     os.remove(pdf_path)
 
-@documents_router.post("/generate_docx", response_class=FileResponse)
+@documents_router.post("/generate_pdf", response_class=FileResponse)
 async def generate_pdf(struct: Dict[str, str]):
     filename = "tmp.pdf"
     text = struct["text"]
