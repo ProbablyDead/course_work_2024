@@ -40,6 +40,21 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
         (document: LatexDocument) => {setSelectedDocument(document)}, errorOccured);
     }, [privateDocumentsAPI, errorOccured]);
  
+    const handleDownload = useCallback((name: string, text: string) => {
+        const success = async (response: unknown) => {
+            const blob = await (response as Response).blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        };
+
+        privateDocumentsAPI.getPDFDocument(text, success);
+    }, [privateDocumentsAPI]);
+ 
     const handleDelete = useCallback((document: LatexDocument) => {
         privateDocumentsAPI.deletePrivateDocument(document.id, 
         handleBackClick, errorOccured);
@@ -52,6 +67,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
                     onBack={handleBackClick} 
                     onChange={handleChange}
                     onCreateNew={handleCreateNew}
+                    onDownload={handleDownload}
                     onDelete={handleDelete}
                     errorOccured={errorOccured}/>
             ) : (

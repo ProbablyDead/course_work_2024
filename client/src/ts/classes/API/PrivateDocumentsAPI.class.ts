@@ -42,4 +42,8 @@ export default class PrivateDocumentsAPI extends API implements PrivateDocuments
     public deletePrivateDocument(id: string, success: () => void, error: (message: string) => void): void {
         this.sendPOSTRequest(`${this.prefix}/delete/private`, {...this.user.getStruct(), ...{"id": id}}, success , error);
     }
+
+    public getPDFDocument(text: string, success: (response: unknown) => void): void{
+        this.getPDF(text, success);
+    }
 }

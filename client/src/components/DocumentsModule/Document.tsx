@@ -8,11 +8,12 @@ interface DocumentProps {
     onBack: () => void;
     onChange: (document: LatexDocument) => void;
     onCreateNew: (document: LatexDocument) => void;
+    onDownload: (name: string, text: string) => void;
     onDelete: (document: LatexDocument) => void;
     errorOccured: (message: string) => void;
 }
 
-const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew, onDelete, errorOccured}) => {
+const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew, onDownload, onDelete, errorOccured}) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const handleSave = useCallback(() => {
@@ -29,10 +30,19 @@ const Document: React.FC<DocumentProps> = ({ doc, onBack, onChange, onCreateNew,
         onChange(doc);
     }, [doc, errorOccured, onChange]);
 
+    const handleDownload = useCallback(() => {
+        if (!ref.current) {
+            return;
+        }
+
+        onDownload(document.getElementById("name")?.innerText || "file", ref.current.innerHTML);
+    }, [onDownload]);
+
     return (
         <div className="document-details">
             <div>
                 <button className="button" onClick={onBack}>Back</button>
+                <button className="button" onClick={handleDownload}>Download</button>
                 {
                     doc.isPrivate ? (
                     <>
