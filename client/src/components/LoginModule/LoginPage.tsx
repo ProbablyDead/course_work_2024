@@ -12,17 +12,18 @@ interface LoginPageProps {
 };
 
 function checkString(str: string): boolean {
-    return /^[a-zA-Z0-9_]+$/.test(str);
+    return /^[a-zA-Z0-9_-]+$/.test(str);
 };
 
 function checkUsernameAndPassword(username: string, password: string, 
     errorOccured: (message: string) => void): boolean {
+    const reqs: string = "must contain only letters, numbers, '-', '_' and '!'";
     if (!checkString(username)) {
-        errorOccured("Username must contain only letters, numbers and underscore");
+        errorOccured("Username " + reqs);
         return false;
     }
     if (!checkString(password)) {
-        errorOccured("Password must contain only letters, numbers and underscore");
+        errorOccured("Password " + reqs);
         return false;
     }
     return true;
