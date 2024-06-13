@@ -12,12 +12,12 @@ interface LoginPageProps {
 };
 
 function checkString(str: string): boolean {
-    return /^[a-zA-Z0-9_-!]+$/.test(str);
+    return /^[a-zA-Z0-9_-]+$/.test(str);
 };
 
 function checkUsernameAndPassword(username: string, password: string, 
     errorOccured: (message: string) => void): boolean {
-    const reqs: string = "must contain only letters, numbers, '-', '_' and '!'";
+    const reqs: string = "must contain only letters, numbers, '-' and '_'";
     if (!checkString(username)) {
         errorOccured("Username " + reqs);
         return false;
