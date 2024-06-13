@@ -12,7 +12,7 @@ interface LoginPageProps {
 };
 
 function checkString(str: string): boolean {
-    return /^[a-zA-Z0-9_-]+$/.test(str);
+    return /^[a-zA-Z0-9_-!]+$/.test(str);
 };
 
 function checkUsernameAndPassword(username: string, password: string, 
