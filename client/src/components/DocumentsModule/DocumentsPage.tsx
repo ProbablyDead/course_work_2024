@@ -3,7 +3,7 @@ import PublicDocumentsAPIProps from "../../ts/interfaces/API/PublicDocuments_API
 import PrivateDocumentsAPIProps from "../../ts/interfaces/API/PrivateDocuments_API.interface";
 import DocumentsList from "./DocumentsList";
 import Document from "./Document";
-import LatexDocument from "../../ts/classes/LatexDocument.class";
+import GOSTDocument from "../../ts/classes/LatexDocument.class";
 import './styles/DocumentsPage.css'
 
 interface DocumentsPageProps {
@@ -16,9 +16,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
     privateDocumentsAPI,
     errorOccured}) => {
 
-    const [publicDocs, setPublicDocs] = useState<LatexDocument[]>([]);
-    const [privateDocs, setPrivateDocs] = useState<LatexDocument[]>([]);
-    const [selectedDocument, setSelectedDocument] = useState<LatexDocument | null>(null);
+    const [publicDocs, setPublicDocs] = useState<GOSTDocument[]>([]);
+    const [privateDocs, setPrivateDocs] = useState<GOSTDocument[]>([]);
+    const [selectedDocument, setSelectedDocument] = useState<GOSTDocument | null>(null);
 
     useEffect(() => {
         publicDocumentsAPI.getDocumentsList(setPublicDocs, errorOccured);
@@ -31,13 +31,13 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
         setSelectedDocument(null);
     }, [publicDocumentsAPI, privateDocumentsAPI, errorOccured]);
 
-    const handleChange = useCallback((document: LatexDocument) => {
+    const handleChange = useCallback((document: GOSTDocument) => {
         privateDocumentsAPI.updatePrivateDocument(document, () => {}, errorOccured);
     }, [privateDocumentsAPI, errorOccured]);
  
-    const handleCreateNew = useCallback((document: LatexDocument) => {
+    const handleCreateNew = useCallback((document: GOSTDocument) => {
         privateDocumentsAPI.addPrivateDocument(document.name + " (copy)", document.text ? document.text : "", 
-        (document: LatexDocument) => {setSelectedDocument(document)}, errorOccured);
+        (document: GOSTDocument) => {setSelectedDocument(document)}, errorOccured);
     }, [privateDocumentsAPI, errorOccured]);
  
     const handleDownload = useCallback((name: string, text: string) => {
@@ -55,9 +55,10 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({publicDocumentsAPI,
         privateDocumentsAPI.getPDFDocument(text, success);
     }, [privateDocumentsAPI]);
  
-    const handleDelete = useCallback((document: LatexDocument) => {
-        privateDocumentsAPI.deletePrivateDocument(document.id, 
-        handleBackClick, errorOccured);
+    const handleDelete = useCallback((document: GOSTDocument) => {
+        if (window.confirm("Are you sure you want to delete this document?")) 
+            privateDocumentsAPI.deletePrivateDocument(document.id, 
+            handleBackClick, errorOccured);
     }, [privateDocumentsAPI, handleBackClick, errorOccured]);
  
     return (
